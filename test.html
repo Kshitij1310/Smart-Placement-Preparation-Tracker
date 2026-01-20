@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+</head>
+<body>
+    <h1>System Status Check</h1>
+    <div id="status"></div>
+    
+    <script>
+        async function checkSystem() {
+            const status = document.getElementById('status');
+            
+            try {
+                // Test Backend
+                const backendRes = await fetch('http://localhost:5000/api/health');
+                const backendData = await backendRes.json();
+                status.innerHTML += '<p style="color:green">✅ Backend: ' + JSON.stringify(backendData) + '</p>';
+                
+                // Test Tasks API
+                const tasksRes = await fetch('http://localhost:5000/api/tasks');
+                const tasksData = await tasksRes.json();
+                status.innerHTML += '<p style="color:green">✅ Tasks API: ' + tasksData.length + ' tasks found</p>';
+            } catch (err) {
+                status.innerHTML += '<p style="color:red">❌ Error: ' + err.message + '</p>';
+            }
+        }
+        
+        checkSystem();
+    </script>
+</body>
+</html>
